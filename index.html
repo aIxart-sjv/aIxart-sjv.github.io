@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sitti Jaivardhan - Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --bg-color: #f9f9f9;
+      --text-color: #222222;
+      --accent-color: #007bff;
+      --card-bg: #ffffff;
+      --shadow: rgba(0, 0, 0, 0.1);
+      --secondary-text: #666;
+    }
+
+    [data-theme="dark"] {
+      --bg-color: #0a0a0a;
+      --text-color: #f5f5f5;
+      --accent-color: #00ff88;
+      --card-bg: #1a1a1a;
+      --shadow: rgba(255, 255, 255, 0.05);
+      --secondary-text: #aaa;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      transition: background 0.5s, color 0.5s;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(10, 10, 10, 0.9);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    [data-theme="dark"] .navbar {
+      background: rgba(26, 26, 26, 0.9);
+    }
+
+    .nav-left {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-left a, .nav-right a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 400;
+      transition: color 0.3s;
+    }
+
+    .nav-left a:hover, .nav-right a:hover {
+      color: var(--accent-color);
+    }
+
+    .signature {
+      font-family: 'Poppins', cursive;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    .hero {
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      align-items: center;
+      padding: 0 2rem;
+      gap: 2rem;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .available {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+
+    .available::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent-color);
+      border-radius: 50%;
+    }
+
+    .hero-center {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .hero-center h1 {
+      font-size: 4rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .profile-photo {
+      width: 200px;
+      height: 200px;
+      border-radius: 20%;
+      object-fit: cover;
+      border: 3px solid var(--accent-color);
+      margin-bottom: 1rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .social-links img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .bio {
+      font-size: 1.1rem;
+      max-width: 500px;
+      text-align: center;
+      color: var(--secondary-text);
+    }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      text-align: right;
+    }
+
+    .quote {
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--accent-color);
+      max-width: 300px;
+      position: relative;
+    }
+
+    .quote::before {
+      content: '"';
+      font-size: 4rem;
+      color: var(--accent-color);
+      position: absolute;
+      left: -20px;
+      top: -10px;
+    }
+
+    .cta {
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1rem;
+    }
+
+    .cta h3 {
+      font-size: 1.5rem;
+      margin: 0;
+      color: var(--secondary-text);
+    }
+
+    .cta button {
+      background: var(--accent-color);
+      color: #000;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 0;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+      align-self: flex-end;
+    }
+
+    .cta button:hover {
+      background: color-mix(in srgb, var(--accent-color) 80%, white);
+    }
+
+    .showcase {
+      min-height: 100vh;
+      padding: 5rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;
+      gap: 2rem;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 136, 0.1) 2px,
+        rgba(0, 255, 136, 0.1) 4px
+      );
+    }
+
+    [data-theme="dark"] .showcase {
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 255, 136, 0.05) 2px,
+        rgba(0, 255, 136, 0.05) 4px
+      );
+    }
+    [data-theme="light"] .navbar {
+      background: rgba(255, 255, 255, 0.95);
+    }
+
+    .left-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .left-nav h2 {
+      font-size: 1.5rem;
+      color: var(--secondary-text);
+      margin-bottom: 1rem;
+    }
+
+    .nav-item {
+      padding: 1rem;
+      background: var(--card-bg);
+      border-left: 3px solid transparent;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 400;
+    }
+
+    .nav-item:hover, .nav-item.active {
+      border-left-color: var(--accent-color);
+      background: color-mix(in srgb, var(--card-bg) 90%, var(--accent-color));
+      color: var(--accent-color);
+    }
+
+    .center-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .content-item {
+      display: none;
+    }
+
+    .content-item.active {
+      display: block;
+    }
+
+    .project-preview {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .project-card, .education-card, .experience-card, .about-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+    .skills-list, .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .skill-tag {
+      background: var(--accent-color);
+      color: #000;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    .project-card img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5%;
+      display: block;
+      margin: 0 auto 1rem auto;
+    }
+
+    .right-desc {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .right-desc h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--secondary-text);
+    }
+
+    .right-desc p {
+      color: var(--secondary-text);
+    }
+
+    .explore-btn {
+      background: transparent;
+      color: var(--accent-color);
+      border: 1px solid var(--accent-color);
+      padding: 0.5rem 1rem;
+      border-radius: 0;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: auto;
+      align-self: flex-start;
+    }
+
+    .explore-btn:hover {
+      background: var(--accent-color);
+      color: #000;
+    }
+
+    .btn {
+      background: var(--accent-color);
+      color: #000;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.3s, color 0.3s;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: color-mix(in srgb, var(--accent-color) 80%, white);
+      color: #222;
+    }
+    .art-card img {
+      width: 50%;
+      height: 8x;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    .contact-section {
+      min-height: 100vh;
+      padding: 5rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-left h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-form input, .contact-form select, .contact-form textarea {
+      padding: 1rem;
+      border: 1px solid var(--secondary-text);
+      background: var(--card-bg);
+      color: var(--text-color);
+      border-radius: 0;
+      font-family: inherit;
+    }
+
+    .contact-form button {
+      background: var(--accent-color);
+      color: #000;
+      border: none;
+      padding: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .contact-form button:hover {
+      background: color-mix(in srgb, var(--accent-color) 80%, white);
+    }
+
+    .contact-right h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+
+    .schedule-btn {
+      background: transparent;
+      color: var(--accent-color);
+      border: 2px solid var(--accent-color);
+      padding: 1rem 2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 1rem;
+    }
+
+    .schedule-btn:hover {
+      background: var(--accent-color);
+      color: #000;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--card-bg);
+      color: var(--secondary-text);
+    }
+
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--accent-color);
+      color: var(--accent-color);
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      z-index: 1001;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: var(--accent-color);
+      color: #000;
+    }
+
+    .cursor {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--accent-color);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: width 0.1s ease, height 0.1s ease, border 0.1s ease;
+      box-shadow: 0 0 10px var(--accent-color);
+      will-change: transform;
+    }
+
+    .cursor.grow {
+      width: 40px;
+      height: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .hero, .showcase, .contact-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .hero-center h1 {
+        font-size: 2.5rem;
+      }
+
+      .nav-left {
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body data-theme="dark">
+  <div class="cursor"></div>
+  <button class="theme-toggle">Toggle Theme</button>
+
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="#hero">Home</a>
+      <a href="#showcase">Portfolio</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="signature">SJV</div>
+    <div class="nav-right"></div>
+  </nav>
+
+  <section id="hero" class="hero">
+    <div class="hero-left">
+      <div class="available">Available Now</div>
+    </div>
+    <div class="hero-center">
+      <h1>Sitti Jaivardhan</h1>
+      <img src="profile.jpg" alt="Profile Photo" class="profile-photo">
+      <div class="social-links">
+        <a href="https://linkedin.com/in/sitti-jaivardhan-90a8b3329/"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/LinkedIn_logo_initials.png/500px-LinkedIn_logo_initials.png" alt="LinkedIn"></a>
+        <a href="https://github.com/aIxart-sjv"><img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="GitHub"></a>
+        <a href="https://x.com/_aIxart_sjv_"><img src="https://abs.twimg.com/icons/apple-touch-icon-192x192.png" alt="X"></a>
+        <a href="https://instagram.com/_alxart_sjv_"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1200px-Instagram_logo_2016.svg.png" alt="Instagram"></a>
+      </div>
+      <p class="bio">I'm Sitti Jaivardhan – currently a B.E. student in Artificial Intelligence and Machine Learning, eager to apply my skills to real-world projects..</p>
+    </div>
+    <div class="hero-right">
+      <div class="quote">
+        AI won't replace humans, but those who use AI will replace those who don't.
+      </div>
+      <div class="cta">
+        <h3>Got a project idea?</h3>
+        <button>Let's Talk</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="showcase" class="showcase">
+    <div class="left-nav">
+      <h2>Portfolio</h2>
+      <div class="nav-item active" data-target="about-me">About Me</div>
+      <div class="nav-item" data-target="projects">Projects</div>
+      <div class="nav-item" data-target="education">Education</div>
+      <div class="nav-item" data-target="experience">Experience</div>
+      <div class="nav-item" data-target="arts">Arts & Creativity</div>
+      <div class="nav-item" data-target="resume">Resume</div>
+    </div>
+
+    <div class="center-content">
+      <div id="about-me" class="content-item active">
+        <div class="about-card">
+          <h2>About Me</h2>
+          <p>I am an aspiring Artificial Intelligence and Machine Learning Engineer with a passion for solving real-world problems through technology. Currently pursuing my B.E. in AIML at Chennai Institute of Technology, I aim to bridge the gap between human creativity and AI-driven solutions. My interests lie in machine learning, computer vision, data science, and intelligent systems, with a focus on developing solutions that are not only accurate and efficient but also ethical and user-friendly. I enjoy combining technical skills with problem-solving abilities to create impactful projects—from CCTV Anomaly Detection to AI-Based Smart Internship Allocation (SIH 2025). Beyond academics, I have a keen interest in astronomy, football, 3D designing, and drawing, which fuel my creativity and innovative mindset.</p>
+          <h3>Skills</h3>
+          <div class="skills-list">
+            <span class="skill-tag">Machine Learning</span>
+            <span class="skill-tag">Data Science</span>
+            <span class="skill-tag">Cybersecurity</span>
+            <span class="skill-tag">AI Ethics</span>
+            <span class="skill-tag">Problem Solving</span>
+            <span class="skill-tag">Critical Thinking</span>
+            <span class="skill-tag">Web & App Development</span>
+          </div>
+          <h3>Tech Stack</h3>
+          <div class="tech-stack">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">C / C++</span>
+            <span class="skill-tag">Linux</span>
+            <span class="skill-tag">TensorFlow</span>
+            <span class="skill-tag">Scikit-learn</span>
+            <span class="skill-tag">Pandas</span>
+            <span class="skill-tag">NumPy</span>
+            <span class="skill-tag">Keras</span>
+            <span class="skill-tag">SQL</span>
+            <span class="skill-tag">HTML / CSS / JS</span>
+            <span class="skill-tag">Git / GitHub / Jupyter Notebook / VS Code</span>
+            
+          </div>
+        </div>
+      </div>
+
+      <div id="projects" class="content-item">
+        <div class="project-card">
+          <h2>Featured Projects</h2>
+          <p>Explore my latest work in AI and cybersecurity.</p>
+          <!-- Add project cards here -->
+           <div class="card project-card">
+              <img src="face_recognition.png" alt="Face Recognition CCTV">
+              <h3>Face Recognition CCTV</h3>
+              <p>AI-powered CCTV system that identifies people in real-time.</p>
+              <a href="https://github.com/aIxart-sjv/FaceRecognition_CCTV" class="btn">View Project</a>
+           </div>
+           <div class="card project-card">
+              <img src="phishing_email_detector.jpg" alt="Phishing Email Detector">
+              <h3>Phishing Email Detector</h3>
+              <p>AI model to detect phishing emails with high accuracy.</p>
+              <a href="https://github.com/aIxart-sjv/PhishingEmailDetector" class="btn">View Project</a>
+           </div>
+        </div>
+      </div>
+
+      <div id="education" class="content-item">
+        <div class="education-card">
+          <h2>Education</h2>
+          <h3>Bachelor of Engineering in AI & Machine Learning</h3>
+          <p>CIT | 2024 – Present<br>Currently pursuing a B.E. with a focus on AI, Machine Learning, and Data Science. Building practical skills through semester projects, including CCTV Anomaly Detection and AI-Based Smart Allocation for PM Internship (SIH 2025). Actively exploring areas like computer vision, deep learning, natural language processing, and web development. Member of innovation-driven hackathons and interested in integrating AI with real-world applications.</p>
+          <h3>Higher Secondary Certificate</h3>
+          <p>St. Thomas Matriculation Higher Secondary School | 2024<br>Completed Higher Secondary with specialization in Computer Science & Mathematics. Developed a strong foundation in programming (C , C++, Python, SQL), mathematics (Discrete Math, Calculus, Probability), and problem-solving skills. Participated in school-level competitions in science, football, and creative arts.</p>
+        </div>
+      </div>
+
+      <div id="experience" class="content-item">
+        <div class="experience-card">
+          <h2>Experience</h2>
+          <h3>AAI Intern<br>IT department | 2025</h3>
+          <p>Gained experience in real-world IT workflows, debugging, and deployment practices.</p>
+          <h3>Cybersecurity Enthusiast Projects<br>Personal | 2024 – 2025</h3>
+          <p>Designed and implemented small-scale projects related to ethical hacking, penetration testing, and security awareness. Explored tools like Wireshark, Metasploit, Kali Linux utilities. Built awareness projects highlighting AI’s role in cybersecurity.</p>
+          <h3>AI & Machine Learning Projects<br>Personal / Academic | 2024 – 2025</h3>
+          <p>CCTV Anomaly Detection – Built a frame-based anomaly detection system using OpenCV and Deep Learning. AI-Based Smart Allocation for PM Internship (SIH 2025) – Developed a student–internship matching system based on eligibility rules, skills, and AI-driven ranking. Web Applications with Flask & Streamlit – Created interactive dashboards and student portals for project demonstrations.</p>
+          <h3>Hackathons & Competitions<br>Smart India Hackathon 2025</h3>
+          <p>Represented college with the project AI-Based Smart Internship Allocation. Participated in coding competitions and technical fests focused on AI & problem-solving.</p>
+          <div class="stats" style="display: flex; justify-content: space-around; margin-top: 2rem;">
+            <div><h3>3+</h3><p>Projects Completed</p></div>
+            <div><h3>0</h3><p>Satisfied Clients</p></div>
+            <div><h3>8+</h3><p>Positive Reviews</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="arts" class="content-item">
+        <h2>Arts & Creativity</h2>
+        <p>Engaged in various artistic pursuits, including digital art, and creative writing.</p>
+        <div class="card art-card">
+        <img src="toji_fushiguro.jpg" alt="Toji Fushiguro">
+        <h3>Toji Fushiguro</h3>
+        <p>A character from Jujutsu Kaisen, known for his strength and combat skills.</p>
+        <a href="https://www.instagram.com/p/DPWZfTKDwPA/" class="btn">View art</a>
+        </div>
+      </div>
+
+      <div id="resume" class="content-item">
+        <img src="resume.pdf" alt="Resume" class="project-preview">
+        <div class="project-card">
+          <h2>Resume</h2>
+          <p>Download my resume for detailed experience and skills.</p>
+          <a href="resume.pdf" download>Download Resume PDF</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-desc">
+      <h3 id="desc-title">Innovative Solutions</h3>
+      <p id="desc-text">Applying AI/ML knowledge to create intuitive and effective systems.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="contact-section">
+    <div class="contact-left">
+      <h1>Wanna Discuss New Project?</h1>
+      <form action="https://formspree.io/f/mzzjgrap" method="POST" class="contact-form">
+        <input type="text" name="name" placeholder="Your Name">
+        <input type="email" name="email" placeholder="Your Email">
+        <select name="project-type">
+          <option>Project Type</option>
+          <option>Website Application</option>
+          <option>AI/ML Development</option>
+          <option>App Development</option>
+          <option>Other</option>
+        </select>
+        <textarea name="message" placeholder="Write your message......"></textarea>
+        <button type="submit">Drop Message</button>
+      </form>
+    </div>
+    <div class="contact-right">
+      <h3>Have a story to tell?</h3>
+      <p>Schedule a call</p>
+      <button class="schedule-btn">Schedule a call →</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Sitti Jaivardhan | All rights reserved</p>
+  </footer>
+
+  <script>
+    // Cursor Effects
+    const cursor = document.querySelector('.cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.transform = `translate(${e.clientX - 10}px, ${e.clientY - 10}px)`;
+    });
+
+    document.querySelectorAll('a, button, .nav-item').forEach(elem => {
+      elem.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      elem.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+
+    // Theme Toggle
+    document.querySelector('.theme-toggle').addEventListener('click', () => {
+      document.body.dataset.theme = document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+    });
+
+    // Showcase Navigation
+    const navItems = document.querySelectorAll('.nav-item');
+    const contentItems = document.querySelectorAll('.content-item');
+    const descTitle = document.getElementById('desc-title');
+    const descText = document.getElementById('desc-text');
+    const exploreBtn = document.getElementById('explore-btn');
+
+    const contentData = {
+      'about-me': { title: 'About Me', text: 'I am an aspiring AI/ML Engineer with a passion for solving real-world problems through technology.', btnText: 'Read More' },
+      projects: { title: 'Featured Projects', text: 'Explore my latest work in AI and cybersecurity, showcasing innovative solutions.', btnText: 'View All Projects' },
+      education: { title: 'Academic Journey', text: 'Building a strong foundation in AI/ML at CIT.', btnText: 'Learn More' },
+      experience: { title: 'Professional Experience', text: 'Gaining hands-on expertise in ML and cybersecurity.', btnText: 'View Details' },
+      arts: { title: 'Arts & Creativity', text: 'Exploring creativity through art and design.', btnText: 'See My Art' },
+      resume: { title: 'Career Summary', text: 'Comprehensive overview of skills and achievements.', btnText: 'Download Resume' }
+    };
+
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const target = item.dataset.target;
+
+        // Update nav
+        navItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+
+        // Update content
+        contentItems.forEach(c => c.classList.remove('active'));
+        document.getElementById(target).classList.add('active');
+
+        // Update right desc
+        descTitle.textContent = contentData[target].title;
+        descText.textContent = contentData[target].text;
+        exploreBtn.textContent = contentData[target].btnText;
+        exploreBtn.onclick = () => {
+          // Handle explore action, e.g., scroll or modal
+          console.log(`Explore ${target}`);
+        };
+      });
+    });
+
+    // Scroll Animations with GSAP
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from('.hero', { duration: 1, y: 50, opacity: 0 });
+    gsap.from('.showcase', { duration: 1, y: 50, opacity: 0, scrollTrigger: { trigger: '.showcase', start: 'top 80%' } });
+    gsap.from('.contact-section', { duration: 1, y: 50, opacity: 0, scrollTrigger: { trigger: '.contact-section', start: 'top 80%' } });
+  </script>
+</body>
+</html>
